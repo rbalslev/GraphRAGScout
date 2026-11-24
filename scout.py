@@ -46,8 +46,9 @@ def build_options(max_budget_usd: float) -> ClaudeAgentOptions:
         model="claude-opus-5-5",
         # 2. Tools: the only built-in tools the model can see.
         tools=["WebSearch", "WebFetch", "Read", "Edit"],
-        # 3. Permissions: run these tools without asking, and deny anything else.
-        allowed_tools=["WebSearch", "WebFetch", "Read", "Edit"],
+        # 3. Permissions: run these without asking (Read/Edit only on sources.md), deny anything else.
+        #    Fetched pages are untrusted, so file access is scoped per path, not per tool.
+        allowed_tools=["WebSearch", "WebFetch", "Read(./sources.md)", "Edit(./sources.md)"],
         permission_mode="dontAsk",
         # 4. Environment: the folder it works in, with no user or project settings loaded.
         cwd=HERE,
